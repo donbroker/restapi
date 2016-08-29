@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="e2c7d8b4-bffc-4153-bea0-3b820090d555" name="wordpress-jeff" url="http://ec2-54-85-248-65.compute-1.amazonaws.com">
+        <fileTransfer host="ec2-54-85-248-65.compute-1.amazonaws.com" port="22" privateKey="C:\Users\Owner\Downloads\52calgary.ppk" rootFolder="/opt/bitnami/apps/wordpress/htdocs" accessType="SFTP" username="bitnami" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+      <webServer id="d7e324ce-de2b-4b8d-bfc5-5878c30ed4d9" name="wordpress-jingjing" url="http://54.166.40.15">
+        <fileTransfer host="54.166.40.15" port="22" privateKey="C:\Users\Owner\Downloads\52calgary.ppk" rootFolder="/opt/bitnami/apps/wordpress/htdocs" accessType="SFTP" username="bitnami" keyPair="true">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
