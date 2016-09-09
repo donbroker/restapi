@@ -28,6 +28,10 @@ if ( !class_exists('Geodir_REST') ) {
         private static $instance;
             
         public static function initialize() {
+            if(!defined('REST_API_VERSION')){
+                return;
+            }
+
             if ( !isset( self::$instance ) && !( self::$instance instanceof Geodir_REST ) ) {
                 self::$instance = new Geodir_REST;
                 self::$instance->actions();
@@ -103,22 +107,29 @@ if ( !class_exists('Geodir_REST') ) {
             require_once( GEODIR_REST_PLUGIN_DIR . 'language.php' );
         }
         
-        public function activation() {
+        public static function activation() {
         }
         
-        public function deactivation() {
+        public static function deactivation() {
         }
         
-        public function uninstall() {
+        public static function uninstall() {
         }
         
         public function includes() {
-            require_once( GEODIR_REST_PLUGIN_DIR . 'includes/class-geodir-rest-listings-controller.php' );
-            require_once( GEODIR_REST_PLUGIN_DIR . 'includes/class-geodir-rest-reviews-controller.php' );
-            /*********************************  **************************************/
-            require_once( GEODIR_REST_PLUGIN_DIR . 'includes/class-geodir-rest-taxonomies-controller.php' );           
-            require_once( GEODIR_REST_PLUGIN_DIR . 'includes/class-geodir-rest-terms-controller.php' );    
-            /*********************************  **************************************/            
+            if(!is_admin()){
+                if(!function_exists('is_plugin_active')){
+                    require_once(ABSPATH . 'wp-admin/includes/plugin.php');
+                }
+
+                if(!is_plugin_active('rest-api/plugin.php')){
+                    includes_once(GEODIR_REST_PLUGIN_DIR . 'includes/rest-api/plugin.php');
+                }
+                require_once( GEODIR_REST_PLUGIN_DIR . 'includes/class-geodir-rest-listings-controller.php' );
+                require_once( GEODIR_REST_PLUGIN_DIR . 'includes/class-geodir-rest-reviews-controller.php' );
+                require_once( GEODIR_REST_PLUGIN_DIR . 'includes/class-geodir-rest-taxonomies-controller.php' );
+                require_once( GEODIR_REST_PLUGIN_DIR . 'includes/class-geodir-rest-terms-controller.php' );
+            }
             include_once( GEODIR_REST_PLUGIN_DIR . 'includes/geodir-rest-functions.php' );
         }
         
@@ -138,7 +149,6 @@ if ( !class_exists('Geodir_REST') ) {
                             foreach ($data['taxonomies'] as $taxonomy) {
                                 if (isset($wp_taxonomies[$taxonomy])) {
                                     if ($taxonomy == $post_type . 'category') {
-                                        // $rest_base = 'category';
                                         $rest_base = $post_type . 'category';
                                     } else if ($taxonomy == $post_type . '_tags') {
                                         $rest_base = $post_type . '_tags';
@@ -231,14 +241,6 @@ if ( !class_exists('Geodir_REST') ) {
         }
     }
 }
-
-if ( !function_exists( 'is_plugin_active' ) ) {
-    require_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-}
-if ( !is_plugin_active( 'rest-api/plugin.php' ) ) {
-    include_once( plugin_dir_path( __FILE__ ) . 'includes/rest-api/plugin.php' );
-}
-
 global $geodir_rest;
 $geodir_rest = new Geodir_REST();
 $geodir_rest->initialize();

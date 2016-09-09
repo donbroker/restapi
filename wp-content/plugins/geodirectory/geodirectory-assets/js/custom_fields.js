@@ -1,13 +1,16 @@
 jQuery(document).ready(function () {
     jQuery("#gt-form-builder-tab ul li a").click(function () {
         if(!jQuery(this).attr('id')){return;}
-        var type = jQuery(this).attr('id').replace('gt-', '');
+        //var type = jQuery(this).attr('id').replace('gd-', '');
+        var type = jQuery(this).data("field-type");
+        var type_key = jQuery(this).data("field-type-key");
         var post_type = jQuery(this).closest('#gt-form-builder-tab').find('#new_post_type').val();
         var id = 'new' + jQuery(".field_row_main ul.core li:last").index();
         var manage_field_type = jQuery(this).closest('#geodir-available-fields').find(".manage_field_type").val();
         if (manage_field_type == 'custom_fields' || manage_field_type == 'sorting_options') {
             jQuery.get(geodir_admin_ajax.url + '?action=geodir_ajax_action&create_field=true', {
                 field_type: type,
+                field_type_key: type_key,
                 listing_type: post_type,
                 field_id: id,
                 field_ins_upd: 'new',
@@ -15,6 +18,14 @@ jQuery(document).ready(function () {
             }, function (data) {
                 jQuery('.field_row_main ul.core').append(data);
                 jQuery('#licontainer_' + id).find('#sort_order').val(parseInt(jQuery('#licontainer_' + id).index()) + 1);
+                // reset the chosen selects
+                jQuery("select.chosen_select").chosen();
+
+                show_hide('field_frm'+id);
+                jQuery('html, body').animate({
+                    scrollTop: jQuery("#licontainer_"+id).offset().top
+                }, 1000);
+
             });
             if (manage_field_type == 'sorting_options') {
                 jQuery(this).closest('li').hide();
@@ -24,6 +35,8 @@ jQuery(document).ready(function () {
     jQuery(".field_row_main ul.core").sortable({
         opacity: 0.8,
         cursor: 'move',
+        placeholder: "ui-state-highlight",
+        cancel: "input,label,select",
         update: function () {
             var manage_field_type = jQuery(this).closest('#geodir-selected-fields').find(".manage_field_type").val();
             var order = jQuery(this).sortable("serialize") + '&update=update&manage_field_type=' + manage_field_type;
@@ -103,6 +116,9 @@ function save_field(id) {
                 jQuery('.field_frm').hide();
             }
 
+            // reset the chosen selects
+            jQuery("select.chosen_select").chosen();
+
 
         }
     });
@@ -113,6 +129,15 @@ function save_field(id) {
 
 function show_hide(id) {
     jQuery('#' + id).toggle();
+}
+
+function show_hide_radio(id,sh,cl) {
+    if(sh=='hide'){
+        jQuery( id ).closest( '.widefat' ).find('.'+cl).hide('fast');
+    }else{
+        jQuery( id ).closest( '.widefat' ).find('.'+cl).show('fast');
+    }
+
 }
 
 
@@ -193,7 +218,7 @@ function delete_sort_field(id, nonce, obj) {
                 var field_type = jQuery(obj).closest('li').find('#field_type').val();
                 var htmlvar_name = jQuery(obj).closest('li').find('#htmlvar_name').val();
 
-                jQuery('#gt-' + field_type + '-_-' + htmlvar_name).closest('li').show();
+                jQuery('#gd-' + field_type + '-_-' + htmlvar_name).closest('li').show();
 
             });
 

@@ -115,12 +115,11 @@ function send_marker_jason_to_js()
                 $totalcount = count(array_unique($map_jason));
                 if (!empty($cat_content_info)) {
                     $json_content = substr(implode(',', $cat_content_info), 1);
-                    $json_content = htmlentities($json_content, ENT_QUOTES); // Quotes in csv title import break maps - FIXED by kiran on 2nd March, 2016
+                    $json_content = htmlentities($json_content, ENT_QUOTES, get_option('blog_charset')); // Quotes in csv title import break maps - FIXED by kiran on 2nd March, 2016
                     $canvas_jason = '[{"totalcount":"' . $totalcount . '",' . $json_content . ']';
                 } else {
                     $canvas_jason = '[{"totalcount":"0"}]';
                 }
-
                 $map_canvas_jason_args = array($canvas . '_jason' => $canvas_jason);
 
                 /**
@@ -357,6 +356,7 @@ function geodir_map_load_style() {
 <script type="text/javascript">
 if (!(window.google && typeof google.maps !== 'undefined')) {
     document.write('<' + 'link id="geodirectory-leaflet-style-css" media="all" type="text/css" href="<?php echo geodir_plugin_url();?>/geodirectory-assets/leaflet/leaflet.css?ver=<?php echo GEODIRECTORY_VERSION;?>" rel="stylesheet"' + '>');
+    document.write('<' + 'link id="geodirectory-leaflet-routing-style" media="all" type="text/css" href="<?php echo geodir_plugin_url();?>/geodirectory-assets/leaflet/routing/leaflet-routing-machine.css?ver=<?php echo GEODIRECTORY_VERSION;?>" rel="stylesheet"' + '>');
 }
 </script>
 <?php
@@ -378,6 +378,7 @@ function geodir_map_load_script() {
 if (!(window.google && typeof google.maps !== 'undefined')) {
     document.write('<' + 'script id="geodirectory-leaflet-script" src="<?php echo geodir_plugin_url();?>/geodirectory-assets/leaflet/leaflet.min.js?ver=<?php echo GEODIRECTORY_VERSION;?>" type="text/javascript"><' + '/script>');
     document.write('<' + 'script id="geodirectory-leaflet-geo-script" src="<?php echo geodir_plugin_url();?>/geodirectory-assets/leaflet/osm.geocode.js?ver=<?php echo GEODIRECTORY_VERSION;?>" type="text/javascript"><' + '/script>');
+    document.write('<' + 'script id="geodirectory-leaflet-routing-script" src="<?php echo geodir_plugin_url();?>/geodirectory-assets/leaflet/routing/leaflet-routing-machine.js?ver=<?php echo GEODIRECTORY_VERSION;?>" type="text/javascript"><' + '/script>');
 }
 </script>
 <?php

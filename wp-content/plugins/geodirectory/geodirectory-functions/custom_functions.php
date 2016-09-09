@@ -70,7 +70,6 @@ function geodir_list_view_select() {
 <?php
 }
 
-//add_action('geodir_before_listing_post_listview', 'geodir_list_view_select');
 add_action('geodir_before_listing', 'geodir_list_view_select', 100);
 
 /**
@@ -847,7 +846,6 @@ function geodir_related_posts_display($request) {
 
             $query_args['tax_query'] = array($tax_query);
 
-
             global $gridview_columns, $post;
 
 
@@ -1355,6 +1353,7 @@ function geodir_detail_page_tabs_list()
 {
     $tabs_excluded = get_option('geodir_detail_page_tabs_excluded');
     $tabs_array = geodir_detail_page_tabs_array();
+    
     if (!empty($tabs_excluded)) {
         foreach ($tabs_excluded as $tab) {
             if (array_key_exists($tab, $tabs_array))
@@ -1390,7 +1389,7 @@ function geodir_show_detail_page_tabs()
         setup_postdata($post);
     }
 
-    $geodir_post_detail_fields = geodir_show_listing_info('detail');
+    $geodir_post_detail_fields = geodir_show_listing_info('moreinfo');
 
 
     if (geodir_is_page('detail')) {
@@ -1440,6 +1439,7 @@ function geodir_show_detail_page_tabs()
             $map_args['zoom'] = '' . $post->post_mapzoom . '';
         }
         $map_args['autozoom'] = false;
+        $map_args['scrollwheel'] = (get_option('geodir_add_listing_mouse_scroll')) ? 0 : 1;
         $map_args['child_collapse'] = '0';
         $map_args['enable_cat_filters'] = false;
         $map_args['enable_text_search'] = false;
@@ -1552,7 +1552,7 @@ function geodir_show_detail_page_tabs()
              */
             do_action('geodir_before_tab_list'); ?>
             <?php
-
+            
             foreach ($arr_detail_page_tabs as $tab_index => $detail_page_tab) {
                 if ($detail_page_tab['is_display']) {
 
@@ -2054,8 +2054,13 @@ function geodir_home_map_cats_key_value_array()
  */
 function geodir_twitter_tweet_button()
 {
+    if (isset($_GET['gde'])) {
+        $link = '?url='.urlencode(geodir_curPageURL());
+    } else {
+        $link = '';
+    }
     ?>
-    <a href="http://twitter.com/share"
+    <a href="http://twitter.com/share<?php echo $link; ?>"
        class="twitter-share-button"><?php _e('Tweet', 'geodirectory'); ?></a>
     <script type="text/javascript" src="//platform.twitter.com/widgets.js"></script>
 <?php

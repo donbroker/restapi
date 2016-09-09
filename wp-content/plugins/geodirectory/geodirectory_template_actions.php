@@ -1404,6 +1404,21 @@ function geodir_action_details_micordata($post='')
 
     echo '<script type="application/ld+json">' . json_encode($schema) . '</script>';
 
+
+    $uploads = wp_upload_dir();
+    $facebook_og = (isset($post->featured_image) && $post->featured_image) ? '<meta property="og:image" content="'.$uploads['baseurl'].$post->featured_image.'"/>' : '';
+
+    /**
+     * Show facebook open graph meta info
+     *
+     * @since 1.6.6
+     * @param string $facebook_og The open graph html to be filtered.
+     * @param object $post The post object.
+     */
+    echo apply_filters('geodir_details_facebook_og', $facebook_og,$post);
+
+
+
 }
 
 add_action('geodir_details_tabs', 'geodir_show_detail_page_tabs', 10);
@@ -2385,7 +2400,7 @@ function geodir_action_add_listing_form()
         else
             $svalue = '';
 
-        $image_limit = $package_info->image_limit;
+        $image_limit = isset($package_info->image_limit) ? $package_info->image_limit : '0';
         $show_image_input_box = ($image_limit != '0');
         /**
          * Filter to be able to show/hide the image upload section of the add listing form.
@@ -2600,7 +2615,7 @@ function geodir_action_signup_forms()
         foreach ($errors as $errorsObj) {
             foreach ($errorsObj as $key => $val) {
                 for ($i = 0; $i < count($val); $i++) {
-                    echo "<div class=sucess_msg>" . $val[$i] . '</div>';
+                    echo "<div class=error_msg_fix>" . $val[$i] . '</div>';
                     $registration_error_msg = 1;
                 }
             }

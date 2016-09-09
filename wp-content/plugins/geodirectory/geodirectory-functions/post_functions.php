@@ -403,9 +403,10 @@ if (!function_exists('geodir_save_listing')) {
                         $post_htmlvar_value = $request_info[$name];
                     }
 
-                    $post_htmlvar_value =  geodir_maybe_untranslate_date($post_htmlvar_value); // maybe untranslate date string if it was translated
+                    $post_htmlvar_value = geodir_date($post_htmlvar_value, 'Y-m-d', $date_format); // save as sql format Y-m-d
+                    $datetime = geodir_maybe_untranslate_date($post_htmlvar_value); // maybe untranslate date string if it was translated
 
-                    $datetime = date("Y-m-d", strtotime($post_htmlvar_value)); // save as sql format Y-m-d
+                    //$datetime = date_i18n("Y-m-d", strtotime($post_htmlvar_value)); // save as sql format Y-m-d
 
                 }
                 $gd_post_info[$name] = $datetime;
@@ -1842,18 +1843,12 @@ if (!function_exists('geodir_get_infowindow_html')) {
             $title = str_replace($srcharr, $replarr, ($postinfo_obj->post_title));
             $lat = $postinfo_obj->post_latitude;
             $lng = $postinfo_obj->post_longitude;
-            $address = str_replace($srcharr, $replarr, ($postinfo_obj->post_address));
-            $contact = str_replace($srcharr, $replarr, ($postinfo_obj->geodir_contact));
-            $timing = str_replace($srcharr, $replarr, ($postinfo_obj->geodir_timing));
         } else {
             $ID = $postinfo_obj->post_id;
             $title = str_replace($srcharr, $replarr, htmlentities($postinfo_obj->post_title, ENT_COMPAT, 'UTF-8')); // fix by Stiofan
             $plink = get_permalink($ID);
             $lat = htmlentities(geodir_get_post_meta($ID, 'post_latitude', true));
             $lng = htmlentities(geodir_get_post_meta($ID, 'post_longitude', true));
-            $address = str_replace($srcharr, $replarr, htmlentities(geodir_get_post_meta($ID, 'post_address', true), ENT_COMPAT, 'UTF-8')); // fix by Stiofan
-            $contact = str_replace($srcharr, $replarr, htmlentities(geodir_get_post_meta($ID, 'geodir_contact', true), ENT_COMPAT, 'UTF-8'));
-            $timing = str_replace($srcharr, $replarr, (geodir_get_post_meta($ID, 'geodir_timing', true)));
         }
 
         // filter field as per price package
@@ -1953,23 +1948,11 @@ if (!function_exists('geodir_get_infowindow_html')) {
                              * @param bool|string $post_preview True if currently in post preview page. Empty string if not.                           *
                              */
                             do_action('geodir_infowindow_meta_before', $ID, $postinfo_obj, $post_preview);
-                            ?>
-                            <span class="geodir_address"><i class="fa fa-home"></i> <?php echo $address; ?></span>
-                            <?php if ($contact) { ?><span class="geodir_contact"><i
-                                class="fa fa-phone"></i>
-                                <?php
-                                $tel_link = apply_filters('geodir_map_bubble_tel_linkable', false);
-                                if ($tel_link) {
-                                    ?>
-                                    <a href="tel:<?php echo preg_replace('/[^0-9+]/', '', $contact); ?>"><?php echo stripslashes($contact); ?></a>
-                                    <?php
-                                } else {
-                                    echo $contact;
-                                }
-                                ?>
-                                </span><?php } ?>
-                            <?php if ($timing) { ?><span class="geodir_timing"><i
-                                class="fa fa-clock-o"></i> <?php echo $timing; ?></span><?php }
+
+
+                            echo geodir_show_listing_info('mapbubble');
+                            
+                                                      
 
                             /**
                              * Fires after the meta info in the map info window.
@@ -2290,7 +2273,7 @@ if (!function_exists('geodir_add_to_favorite')) {
          */
         do_action('geodir_before_add_from_favorite', $post_id);
 
-        echo '<a href="javascript:void(0);" title="' . $remove_favourite_text . '" class="geodir-addtofav geodir-removetofav-icon" onclick="javascript:addToFavourite(\'' . $post_id . '\',\'remove\');"><i class="'. $favourite_icon .'"></i> ' . $unfavourite_text . '</a>';
+        echo '<a href="javascript:void(0);" title="' . $remove_favourite_text . '" class="geodir-removetofav-icon" onclick="javascript:addToFavourite(\'' . $post_id . '\',\'remove\');"><i class="'. $favourite_icon .'"></i> ' . $unfavourite_text . '</a>';
 
         /**
          * Called after adding the post from favourites.
@@ -2369,7 +2352,7 @@ if (!function_exists('geodir_remove_from_favorite')) {
          */
         do_action('geodir_before_remove_from_favorite', $post_id);
 
-        echo '<a href="javascript:void(0);"  title="' . $add_favourite_text . '" class="geodir-addtofav geodir-addtofav-icon" onclick="javascript:addToFavourite(\'' . $post_id . '\',\'add\');"><i class="'. $favourite_icon .'"></i> ' . $favourite_text . '</a>';
+        echo '<a href="javascript:void(0);"  title="' . $add_favourite_text . '" class="geodir-addtofav-icon" onclick="javascript:addToFavourite(\'' . $post_id . '\',\'add\');"><i class="'. $favourite_icon .'"></i> ' . $favourite_text . '</a>';
 
         /**
          * Called after removing the post from favourites.

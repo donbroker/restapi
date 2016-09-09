@@ -1,3 +1,7 @@
+v1.3.0
+Filter added to exclude post title and description from link business - ADDED
+CPT name added to CPT Listings widget - ADDED
+
 v1.2.9
 Linked listings get displayed in listview - FIXED
 Prev/Next lInks not ordered by submit time properly - FIXED

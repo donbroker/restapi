@@ -5,6 +5,11 @@ if ( ! function_exists( 'idocalgary_setup' ) ) :
 
 function idocalgary_setup() {
 
+	add_image_size( 'app_image_1', 600, 336 );
+	add_image_size( 'app_image_2', 400, 300 );
+	add_image_size( 'app_image_3', 500, 400 );
+	add_image_size( 'app_image_4', 600, 500 );
+
 	load_theme_textdomain( 'idocalgary', get_template_directory() . '/languages' );
 
 	add_theme_support( 'automatic-feed-links' );
@@ -52,6 +57,10 @@ function idocalgary_scripts() {
 	}
 }
 add_action( 'wp_enqueue_scripts', 'idocalgary_scripts' );
+add_action('geodir_before_listing_listview', 'add_some_code');
+function add_some_code() {
+	echo '<h1>hello world</h1>';
+}
 
 
 require get_template_directory() . '/inc/wp_bootstrap_navwalker.php';

@@ -15,11 +15,6 @@
  * License:             MIT
  */
 
-add_image_size( 'app_image_1', 600, 336 );
-add_image_size( 'app_image_2', 400, 300 );
-add_image_size( 'app_image_3', 500, 400 );
-add_image_size( 'app_image_4', 600, 500 );
-
 add_action( 'rest_api_init', 'news_register_fields' );
 function news_register_fields() {
     register_rest_field( 'post',
@@ -185,27 +180,66 @@ function news_get_media_file_urls( $object, $field_name, $request ) {
 }
 
 function news_get_plain_text_content( $object, $field_name, $request ) {
-    // return wp_strip_all_tags($object->content->rendered);
     global $post;
     $dom = new DOMDocument('1.0', 'UTF-8');
     $dom->loadHTML(mb_convert_encoding($post->post_content, 'HTML-ENTITIES', 'UTF-8'));
     $finder = new DomXPath($dom);
     
-    $pimg = $finder->query('//p | //img');
-    $length = $pimg->length;
+    $content_object = $finder->query('//ul | //p | //img | //h1 | //h2 | //h3 | //h4 | //h5 | //h6 ');
+    $length = $content_object->length;
     
     $content_array = array();
 
     for ($i = 0; $i < $length; $i++) {
-        $element = $pimg->item($i);
-        if ($element->tagName == 'img') {
-            $src = $element->attributes->getNamedItem('src')->nodeValue;
-            $content_array[] = ['img'=>$src];
-        } else {
-            $text =$element->textContent;
-            if(!empty(trim($text))){
-                $content_array[] = ['p'=>$text];
-            }
+        $element  = $content_object->item($i);
+        $tag_name = $element->tagName;
+        $text     = $element->textContent; 
+        switch ($tag_name) {
+            case 'img':
+                $src = $element->attributes->getNamedItem('src')->nodeValue;
+                $content_array[] = ['img'=>$src];
+                break;
+            case 'p':
+                if(!empty(trim($text))){
+                    $content_array[] = ['p'=>$text];
+                }
+                break;
+            case 'h1':
+                if(!empty(trim($text))){
+                    $content_array[] = ['h1'=>$text];
+                }
+                break;
+            case 'h2':
+                if(!empty(trim($text))){
+                    $content_array[] = ['h2'=>$text];
+                }
+                break;
+            case 'h3':
+                if(!empty(trim($text))){
+                    $content_array[] = ['h3'=>$text];
+                }
+                break;
+            case 'h4':
+                if(!empty(trim($text))){
+                    $content_array[] = ['h4'=>$text];
+                }
+                break;
+            case 'h5':
+                if(!empty(trim($text))){
+                    $content_array[] = ['h5'=>$text];
+                }
+                break;
+            case 'h6':
+                if(!empty(trim($text))){
+                    $content_array[] = ['h6'=>$text];
+                }
+                break;
+            case 'ul':
+                if(!empty(trim($text))){
+                    $content_array[] = ['ul'=>$text];
+                }
+                break;
+            default:
         }
     }
     return $content_array;

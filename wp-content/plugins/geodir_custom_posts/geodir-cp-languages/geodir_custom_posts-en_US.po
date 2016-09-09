@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: GeoDirectory CPT 1.2.9\n"
+"Project-Id-Version: GeoDirectory CPT 1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-07-27 16:54+0100\n"
-"PO-Revision-Date: 2016-07-27 16:54+0100\n"
+"POT-Creation-Date: 2016-09-01 13:50+0100\n"
+"PO-Revision-Date: 2016-09-01 13:50+0100\n"
 "Last-Translator: Stiofan <info@geotheme.com>\n"
 "Language-Team: GeoDirectory <info@wpgeodirectory.com>\n"
 "Language: en_US\n"
@@ -201,157 +201,42 @@ msgstr ""
 msgid "Post type deleted successfully."
 msgstr ""
 
-#: geodir_cp_functions.php:721 geodir_cp_functions.php:723
-#: geodir_cp_functions.php:730
-msgid "Category"
-msgstr ""
-
-#: geodir_cp_functions.php:722
-msgid "Select listing category from here. Select at least one category"
-msgstr ""
-
-#: geodir_cp_functions.php:735 geodir_cp_functions.php:737
-msgid "Address"
-msgstr ""
-
-#: geodir_cp_functions.php:745
-msgid "Address fields are required"
-msgstr ""
-
-#: geodir_cp_functions.php:747
-msgid "City"
-msgstr ""
-
-#: geodir_cp_functions.php:748
-msgid "Region"
-msgstr ""
-
-#: geodir_cp_functions.php:749
-msgid "Country"
-msgstr ""
-
-#: geodir_cp_functions.php:750
-msgid "Zip/Post Code"
-msgstr ""
-
-#: geodir_cp_functions.php:751
-msgid "Set Address On Map"
-msgstr ""
-
-#: geodir_cp_functions.php:752
-msgid "Select Map View"
-msgstr ""
-
-#: geodir_cp_functions.php:759 geodir_cp_functions.php:761
-#: geodir_cp_functions.php:768
-msgid "Time"
-msgstr ""
-
-#: geodir_cp_functions.php:760
-msgid ""
-"Enter Business or Listing Timing Information.<br/>eg. : 10.00 am to 6 pm "
-"every day"
-msgstr ""
-
-#: geodir_cp_functions.php:773 geodir_cp_functions.php:775
-#: geodir_cp_functions.php:782
-msgid "Phone"
-msgstr ""
-
-#: geodir_cp_functions.php:774
-msgid "You can enter phone number,cell phone number etc."
-msgstr ""
-
-#: geodir_cp_functions.php:787 geodir_cp_functions.php:789
-#: geodir_cp_functions.php:796
-msgid "Email"
-msgstr ""
-
-#: geodir_cp_functions.php:788
-msgid "You can enter your business or listing email."
-msgstr ""
-
-#: geodir_cp_functions.php:801 geodir_cp_functions.php:803
-#: geodir_cp_functions.php:809
-msgid "Website"
-msgstr ""
-
-#: geodir_cp_functions.php:802
-msgid "You can enter your business or listing website."
-msgstr ""
-
-#: geodir_cp_functions.php:814 geodir_cp_functions.php:816
-#: geodir_cp_functions.php:823
-msgid "Twitter"
-msgstr ""
-
-#: geodir_cp_functions.php:815
-msgid "You can enter your business or listing twitter url."
-msgstr ""
-
-#: geodir_cp_functions.php:828 geodir_cp_functions.php:830
-#: geodir_cp_functions.php:837
-msgid "Facebook"
-msgstr ""
-
-#: geodir_cp_functions.php:829
-msgid "You can enter your business or listing facebook url."
-msgstr ""
-
-#: geodir_cp_functions.php:842 geodir_cp_functions.php:844
-#: geodir_cp_functions.php:851
-msgid "Video"
-msgstr ""
-
-#: geodir_cp_functions.php:843
-msgid "Add video code here, YouTube etc."
-msgstr ""
-
-#: geodir_cp_functions.php:856 geodir_cp_functions.php:858
-#: geodir_cp_functions.php:865
-msgid "Special Offers"
-msgstr ""
-
-#: geodir_cp_functions.php:857
-msgid "Note: List out any special offers (optional)"
-msgstr ""
-
-#: geodir_cp_functions.php:925
+#: geodir_cp_functions.php:776
 msgid "Post type related data deleted successfully."
 msgstr ""
 
-#: geodir_cp_functions.php:1024
+#: geodir_cp_functions.php:875
 msgid "Select CPT to disable physical location"
 msgstr ""
 
-#: geodir_cp_functions.php:1025
+#: geodir_cp_functions.php:876
 msgid ""
 "Select the post types that does not require geographic position/physical "
 "location. All fields will be disabled that related to geographic position/"
 "physical location."
 msgstr ""
 
-#: geodir_cp_functions.php:1031
+#: geodir_cp_functions.php:882
 msgid "Select post types"
 msgstr ""
 
-#: geodir_cp_functions.php:1373
+#: geodir_cp_functions.php:1224
 msgid "All"
 msgstr ""
 
-#: geodir_cp_functions.php:1375
+#: geodir_cp_functions.php:1226
 msgid "My Favorite"
 msgstr ""
 
-#: geodir_cp_functions.php:1400
+#: geodir_cp_functions.php:1251
 msgid " in"
 msgstr ""
 
-#: geodir_cp_functions.php:1406
+#: geodir_cp_functions.php:1257
 msgid "Search"
 msgstr ""
 
-#: geodir_cp_functions.php:1406
+#: geodir_cp_functions.php:1257
 msgid " For :"
 msgstr ""
 
@@ -849,11 +734,11 @@ msgstr ""
 msgid "No results match"
 msgstr ""
 
-#: geodir_cpt_link_business.php:679
+#: geodir_cpt_link_business.php:689
 msgid "Listing"
 msgstr ""
 
-#: geodir_cpt_link_business.php:682
+#: geodir_cpt_link_business.php:692
 #, php-format
 msgid "Go to: %s"
 msgstr ""

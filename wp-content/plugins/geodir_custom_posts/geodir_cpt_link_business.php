@@ -574,11 +574,21 @@ function geodir_cpt_business_auto_fill($request){
         $content_post = get_post($place_id);
         $content = $content_post->post_content;
 
-        $json_array['post_title'] = array('key' => 'text',
-            'value' => geodir_get_post_meta($place_id,'post_title',true));
+        $excluded = apply_filters('geodir_cpt_business_auto_fill_excluded', array());
 
-        $json_array['post_desc'] = array(	'key' => 'textarea',
-            'value' => $content);
+        $post_title_value = geodir_get_post_meta($place_id,'post_title',true);
+        if (in_array('post_title', $excluded)) {
+            $post_title_value = '';
+        }
+
+        $post_desc_value = $content;
+        if (in_array('post_desc', $excluded)) {
+            $post_desc_value = '';
+        }
+
+        $json_array['post_title'] = array('key' => 'text', 'value' => $post_title_value);
+
+        $json_array['post_desc'] = array(	'key' => 'textarea', 'value' => $post_desc_value);
 
 
         foreach($custom_fields as $key=>$val){

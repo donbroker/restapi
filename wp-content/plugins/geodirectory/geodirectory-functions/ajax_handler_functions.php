@@ -70,7 +70,7 @@ function geodir_on_init()
 
 
 
-    if (get_option('geodir_allow_wpadmin') == '0' && is_user_logged_in() && !current_user_can('manage_options')) {
+    if (get_option('geodir_allow_wpadmin') == '0' && is_user_logged_in() && !current_user_can('manage_options') && !class_exists('BuddyPress')) {
         show_admin_bar(false);
     }
 
@@ -195,8 +195,13 @@ function geodir_ajax_handler() {
 
     if (isset($_REQUEST['popuptype']) && $_REQUEST['popuptype'] != '' && isset($_REQUEST['post_id']) && $_REQUEST['post_id'] != '') {
 
-        if ($_REQUEST['popuptype'] == 'b_send_inquiry' || $_REQUEST['popuptype'] == 'b_sendtofriend')
-            require_once(geodir_plugin_path() . '/geodirectory-templates/popup-forms.php');
+        if ($_REQUEST['popuptype'] == 'b_send_inquiry' || $_REQUEST['popuptype'] == 'b_sendtofriend') {
+            $template = locate_template(array("geodirectory/popup-forms.php"));
+            if (!$template) {
+                $template = geodir_plugin_path() . '/geodirectory-templates/popup-forms.php';
+            }
+            require_once($template);
+        }
 
         gd_die();
     }

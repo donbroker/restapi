@@ -184,12 +184,12 @@ function geodir_cp_add_edit_form() {
         $nav_menus_cats = isset( $_REQUEST['geodir_disable_nav_menus']['cats'] ) && (int)$_REQUEST['geodir_disable_nav_menus']['cats'] == 1 ? 1 : 0;
         $nav_menus_tags = isset( $_REQUEST['geodir_disable_nav_menus']['tags'] ) && (int)$_REQUEST['geodir_disable_nav_menus']['tags'] == 1 ? 1 : 0;
         
-        $cpt_image = sanitize_text_field($_REQUEST['geodir_cpt_img']);
+        $cpt_image = isset($_REQUEST['geodir_cpt_img']) ? sanitize_text_field($_REQUEST['geodir_cpt_img']) : '';
 
         //link business
         $link_business = isset( $_REQUEST['link_business'] ) && (int)$_REQUEST['link_business'] == 1 ? 1 : 0;
-        $linkable_to = stripslashes_deep($_REQUEST['linkable_to']);
-        $linkable_from = stripslashes_deep($_REQUEST['linkable_from']);
+        $linkable_to = isset($_REQUEST['linkable_to']) ? stripslashes_deep($_REQUEST['linkable_to']) : '';
+        $linkable_from = isset($_REQUEST['linkable_from']) ? stripslashes_deep($_REQUEST['linkable_from']) : '';
     }
 
     if(isset($cp_error) && $cp_error != ''){

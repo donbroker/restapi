@@ -3,7 +3,7 @@
 Plugin Name: GeoDirectory Custom Post Types
 Plugin URI: http://wpgeodirectory.com
 Description: GeoDirectory Custom Post Types plugin.
-Version: 1.2.9
+Version: 1.3.0
 Author: GeoDirectory
 Author URI: http://wpgeodirectory.com
 */
@@ -13,7 +13,7 @@ Author URI: http://wpgeodirectory.com
  * Globals
  **/
  
-define("GEODIR_CP_VERSION", "1.2.9");
+define("GEODIR_CP_VERSION", "1.3.0");
 if (!defined('GEODIR_CP_TEXTDOMAIN')) define('GEODIR_CP_TEXTDOMAIN', 'geodir_custom_posts');
 
 global $wpdb,$plugin_prefix,$geodir_addon_list;

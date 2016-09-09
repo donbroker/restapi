@@ -55,8 +55,8 @@ if(!function_exists('register_geodir_cpt_widgets')){
 				<?php echo $before_title.__($title).$after_title;?>
 				<div class="gd-cpt-widget-box clearfix">
 					<div class="gd-cpt-widget-list clearfix">
-					<?php 
-					foreach ($post_types as $cpt => $cpt_info ) { 
+					<?php
+					foreach ($post_types as $cpt => $cpt_info ) {
 						$cpt_name = $cpt_info['labels']['name'];
 						$cpt_url = get_post_type_archive_link($cpt);
 						$image_url = get_option('geodir_cpt_img_' . $cpt);
@@ -64,7 +64,7 @@ if(!function_exists('register_geodir_cpt_widgets')){
 						$cpt_image = $image_url ? '<img alt="' . esc_attr($cpt_name) . '" class="gd-cpt-img" src="' . $image_url . '"/>' : ($cpt_hide_name ? $cpt_name : '');
 						$show_cpt_name = !$cpt_hide_name ? '<div class="gd-cpt-name">' . $cpt_name . '</div>' : '';
 						
-						echo '<div class="gd-cpt-wrow clearfix" style="' . $img_width . $img_height . '"><a href="' . esc_url($cpt_url) . '" title="' . esc_attr($cpt_name) . '">' . $cpt_image . $show_cpt_name . '</a></div>';
+						echo '<div class="gd-cpt-wrow gd-cpt-wrow-'.$cpt.' clearfix" style="' . $img_width . $img_height . '"><a href="' . esc_url($cpt_url) . '" title="' . esc_attr($cpt_name) . '">' . $cpt_image . $show_cpt_name . '</a></div>';
 					}
 					?>
 					</div>

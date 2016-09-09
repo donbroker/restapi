@@ -71,6 +71,7 @@ function set_listing_request()
 
 
     // fix woocommerce shop products filtered by language for GD + WPML + Woocommerce
+
     if (!geodir_is_geodir_page()) {
         return;
     }
@@ -100,6 +101,8 @@ function set_listing_request()
 
         if (isset($_REQUEST['sgeo_lat'])) {
             $mylat = (float)esc_attr($_REQUEST['sgeo_lat']);
+            echo 'hell o aslkdjflajfl a';
+            die('dkfjdk');
         } else {
             $mylat = (float)geodir_get_current_city_lat();
         } //  Latatude

@@ -6,7 +6,6 @@
  * @version    1.3.2 2011.07.01
  * This software is released under the MIT License <http://www.opensource.org/licenses/mit-license.php>
  */
-
 (function ($) {
     if (typeof google!=='undefined' && typeof google.maps!=='undefined') {
         gdMaps = 'google';
@@ -162,40 +161,25 @@
                 center: this.centerLatLng,
                 zoom: opts.zoom,
                 minZoom: opts.minZoom ? opts.minZoom : 1,
-                maxZoom: opts.maxZoom,
-                /*
-                disableDoubleClickZoom: opts.disableDoubleClickZoom,
-                mapTypeControl: opts.mapTypeControl,
-                streetViewControl: opts.streetViewControl,
-                streetViewControlOptions: {
-                    position: opts.streetViewControlOptions.position.toLowerCase()
-                },
-                mapTypeControlOptions: {
-                    position: opts.mapTypeControlOptions.position.toLowerCase(),
-                    style: opts.mapTypeControlOptions.style.toLowerCase()
-                },
-                mapTypeId: opts.maptype.toLowerCase(),
-                navigationControl: opts.navigationControl,
-                navigationControlOptions: {
-                    position: opts.navigationControlOptions.position.toLowerCase(),
-                    style: opts.navigationControlOptions.style.toLowerCase()
-                },
+                maxZoom: opts.maxZoom > 18 ? 18 : opts.maxZoom,
                 zoomControl: true,
-                zoomControlOptions: {
-                    position: opts.zoomControlOptions.position.toLowerCase()
-                },
-                scaleControl: opts.scaleControl,
-                scrollwheel: opts.scrollwheel,
-                */
+                doubleClickZoom: opts.disableDoubleClickZoom === "0" || !opts.disableDoubleClickZoom ? true : false,
+                dragging: true,
+                scrollWheelZoom: opts.scrollwheel === "0" || !opts.scrollwheel ? false : opts.scrollwheel,
+                attributionControl: typeof opts.attributionControl !== 'undefined' ? opts.attributionControl : true,
             };
-            
+
             var osmUrl = '//{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-            osmAttrib = '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            osmAttrib = 'Map data &copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             osm = L.tileLayer(osmUrl, {maxZoom: opts.maxZoom, attribution: osmAttrib});
-            
+
             this.map = new L.Map(el, myOptions).addLayer(osm);
             
-            if (parseInt(options.enable_marker_cluster) === 1) {
+            if (myOptions.zoomControl && (zoomPosition = this.parsePosition(opts.zoomControlOptions.position, 'topleft')) !== 'topleft') {
+                this.map.zoomControl.setPosition(zoomPosition);
+            }
+            
+            if (parseInt(options.enable_marker_cluster) === 1 && !options.enable_marker_cluster_server) {
                 jQuery('#gdOSMprogress').remove();
                 jQuery('#gdOSMprogressBar').remove();
                 jQuery(el).before('<div id="gdOSMprogress"><div id="gdOSMprogressBar"></div></div>');
@@ -280,6 +264,41 @@
         geocode: function (address, options) {            
             var gdcoder = new L.Control.gdGeoCode({ provider: new L.gdGeoCode.Provider.OpenStreetMap() });
             var results = gdcoder.geosearch(address);
+        },
+        
+        parsePosition: function (position, $default) {
+            var parsed = position;
+            if (position && typeof position == 'string') {
+                switch(position.toUpperCase()) {
+                    case 'TOP':
+                    case 'LEFT':
+                    case 'TOP_LEFT':
+                    case 'topleft':
+                        parsed = 'topleft';
+                    break;
+                    case 'RIGHT':
+                    case 'TOP_RIGHT':
+                    case 'topright':
+                        parsed = 'topright';
+                    break;
+                    case 'BOTTOM':
+                    case 'BOTTOM_LEFT':
+                    case 'bottomleft':
+                        parsed = 'bottomleft';
+                    break;
+                    case 'BOTTOM_RIGHT':
+                    case 'bottomright':
+                        parsed = 'bottomright';
+                    break;
+                    default:
+                        parsed = typeof $default !== 'undefined' ? $default : parsed;
+                    break;
+                }
+            } else if (typeof $default !== 'undefined') {
+                parsed = $default;
+            }
+            
+            return parsed;
         },
 
         geoMarker: function () {
@@ -539,6 +558,23 @@
                         iconOptions.className = marker.className;
                     }
                     
+                    if (marker.clustered) {
+                        options.clustered = true;
+                        var c = 'marker-cluster marker-cluster-';
+                        
+                        if (marker.title < 10) {
+                            c += 'small';
+                        } else if (marker.title < 100) {
+                            c += 'medium';
+                        } else {
+                            c += 'large';
+                        }
+                        iconOptions.className = c;
+                        iconOptions.html = '<div><span>' + marker.title + '</span></div>';
+                        marker.w = 40;
+                        marker.h = 40;
+                    }
+                    
                     if (!iconOptions.iconSize && marker.w && marker.h && parseInt(marker.w) > 0 && parseInt(marker.h) > 0) {
                         var w = parseFloat(marker.w);
                         var h = parseFloat(marker.h);
@@ -547,16 +583,21 @@
                         iconOptions.popupAnchor = [0, (h * -1) + (h * 0.05)];
                     }
                     
-                    options.icon = L.icon(iconOptions);
+                    if (marker.clustered) {
+                        options.icon = new L.DivIcon(iconOptions);
+                    } else {
+                        options.icon = L.icon(iconOptions);
+                    }
 
                 } else {
                     options.icon = new L.Icon.Default();
                 }
+                
                 options.position = marker.position ? marker.position : L.latLng(marker.latitude, marker.longitude);
 
                 var cmarker = new L.Marker(options.position, options);
 
-                if (marker.html) {
+                if (marker.html && !marker.clustered) {
                     if (!marker.html.content && !marker.html.ajax && !marker.html.id)
                         marker.html = {content: marker.html};
                     else if (!marker.html.content)
